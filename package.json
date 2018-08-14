@@ -1,0 +1,38 @@
+{
+  "name": "dndice",
+  "version": "0.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "lint": "",
+    "unit-test": "mocha",
+    "test": "npm run lint && npm run unit-test",
+    "build": "webpack --config webpack/prod.config.js",
+    "watch": "webpack --watch --config webpack/dev.config.js",
+    "start": "webpack-dev-server --config webpack/dev.config.js",
+    "clean": "rm -rf dist"
+  },
+  "author": "David García Miguel <noxwings@gmail.com>",
+  "devDependencies": {
+    "@types/lodash": "^4.14.116",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mocha": "^5.2.0",
+    "sinon": "^6.1.5",
+    "sinon-chai": "^3.2.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^1.2.7",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5",
+    "webpack-merge": "^4.1.4"
+  },
+  "dependencies": {
+    "chart.js": "^2.7.2",
+    "lodash": "^4.17.10",
+    "tslib": "^1.9.3"
+  }
+}
