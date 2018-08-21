@@ -9,12 +9,12 @@ const Multiply = createToken({ name: "Multiply", pattern: /\*/ });
 const Dice = createToken({ name: "Dice", pattern: /d\d+/ });
 const Integer = createToken({ name: "Integer", pattern: /\d+/ });
 
-export const tokens = [
+export const tokens = {
     WhiteSpace,
     LParen, RParen,
     Plus, Minus, Multiply,
     Dice,
     Integer
-];
+};
 
-export const lexer = new Lexer(tokens);
+export const lexer = new Lexer(Object.values(tokens));
