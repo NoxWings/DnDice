@@ -4,13 +4,11 @@ import { Parser } from "chevrotain";
 // ---Grammar---
 
 // expression
-//     : (atomicExpression | binaryExpression) [operation]
+//     : singleExpression { operator, singleExpression }
 // subExpression
 //     : LParen expression RParen
-// operation
-//     : operator expression
-// atomicExpression
-//     : Dice | Integer
+// singleExpression
+//     : Dice | Integer | subExpression
 // operator
 //     : Plus | Minus | Multiply
 
@@ -25,37 +23,31 @@ export class DiceParser extends Parser {
     }
 
     private expression: any;
+    private singleExpression: any;
     private subExpression: any;
-    private operation: any;
     private operator: any;
-    private atomicExpression: any;
 
     private constructor () {
         super([], tokens);
 
         this.RULE("expression", () => {
+            this.SUBRULE(this.singleExpression);
+            this.MANY(() => {
+                this.SUBRULE(this.operator);
+                this.SUBRULE2(this.singleExpression);
+            });
+        });
+        this.RULE("singleExpression", () => {
             this.OR([
-                { ALT: () => { this.SUBRULE(this.atomicExpression); } },
+                { ALT: () => { this.CONSUME(tokens.Dice); } },
+                { ALT: () => { this.CONSUME(tokens.Integer); } },
                 { ALT: () => { this.SUBRULE(this.subExpression); } }
             ]);
-            this.OPTION(() => {
-                this.SUBRULE(this.operation);
-            });
         });
         this.RULE("subExpression", () => {
             this.CONSUME(tokens.LParen);
             this.SUBRULE(this.expression);
             this.CONSUME(tokens.RParen);
-        });
-        this.RULE("operation", () => {
-            this.SUBRULE(this.operator);
-            this.SUBRULE(this.expression);
-        });
-        this.RULE("atomicExpression", () => {
-            this.OR([
-                { ALT: () => { this.CONSUME(tokens.Dice); } },
-                { ALT: () => { this.CONSUME(tokens.Integer); } }
-            ]);
         });
         this.RULE("operator", () => {
             this.OR([
