@@ -4,7 +4,7 @@ export class RollDistribution {
     constructor(private odds: Map<number, number>,
                 private denominator: number) {}
 
-    combine(otherRoll: RollDistribution) {
+    add (otherRoll: RollDistribution) {
         const denominator = this.denominator * otherRoll.denominator;
         const odds = new Map();
 
