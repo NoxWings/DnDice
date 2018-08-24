@@ -8,7 +8,9 @@ import { Parser } from "chevrotain";
 // subExpression
 //     : LParen expression RParen
 // singleExpression
-//     : Dice | Integer | subExpression
+//     : Integer | diceExpression | subExpression
+// diceExpression
+//     : Dice (Advantage | Disadvantage)
 // binaryOperator
 //     : Plus | Minus | Multiply
 
@@ -23,8 +25,9 @@ export class DiceParser extends Parser {
     }
 
     private expression: any;
-    private singleExpression: any;
     private subExpression: any;
+    private singleExpression: any;
+    private diceExpression: any;
     private binaryOperator: any;
 
     private constructor () {
@@ -37,17 +40,26 @@ export class DiceParser extends Parser {
                 this.SUBRULE2(this.singleExpression);
             });
         });
-        this.RULE("singleExpression", () => {
-            this.OR([
-                { ALT: () => { this.CONSUME(tokens.Dice); } },
-                { ALT: () => { this.CONSUME(tokens.Integer); } },
-                { ALT: () => { this.SUBRULE(this.subExpression); } }
-            ]);
-        });
         this.RULE("subExpression", () => {
             this.CONSUME(tokens.LParen);
             this.SUBRULE(this.expression);
             this.CONSUME(tokens.RParen);
+        });
+        this.RULE("singleExpression", () => {
+            this.OR([
+                { ALT: () => { this.CONSUME(tokens.Integer); } },
+                { ALT: () => { this.SUBRULE(this.diceExpression); } },
+                { ALT: () => { this.SUBRULE(this.subExpression); } }
+            ]);
+        });
+        this.RULE("diceExpression", () => {
+            this.CONSUME(tokens.Dice);
+            this.OPTION(() => {
+                this.OR([
+                    { ALT: () => { this.CONSUME(tokens.Advantage); } },
+                    { ALT: () => { this.CONSUME(tokens.Disadvantage); } }
+                ]);
+            });
         });
         this.RULE("binaryOperator", () => {
             this.OPTION(() => {
