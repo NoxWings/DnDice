@@ -4,12 +4,12 @@ import { Parser } from "chevrotain";
 // ---Grammar---
 
 // expression
-//     : singleExpression { operator, singleExpression }
+//     : singleExpression { binaryOperator, singleExpression }
 // subExpression
 //     : LParen expression RParen
 // singleExpression
 //     : Dice | Integer | subExpression
-// operator
+// binaryOperator
 //     : Plus | Minus | Multiply
 
 export class DiceParser extends Parser {
@@ -25,7 +25,7 @@ export class DiceParser extends Parser {
     private expression: any;
     private singleExpression: any;
     private subExpression: any;
-    private operator: any;
+    private binaryOperator: any;
 
     private constructor () {
         super([], tokens);
@@ -33,7 +33,7 @@ export class DiceParser extends Parser {
         this.RULE("expression", () => {
             this.SUBRULE(this.singleExpression);
             this.MANY(() => {
-                this.SUBRULE(this.operator);
+                this.SUBRULE(this.binaryOperator);
                 this.SUBRULE2(this.singleExpression);
             });
         });
@@ -49,7 +49,7 @@ export class DiceParser extends Parser {
             this.SUBRULE(this.expression);
             this.CONSUME(tokens.RParen);
         });
-        this.RULE("operator", () => {
+        this.RULE("binaryOperator", () => {
             this.OPTION(() => {
                 this.OR([
                     { ALT: () => { this.CONSUME(tokens.Plus); } },
