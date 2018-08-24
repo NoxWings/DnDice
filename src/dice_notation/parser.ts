@@ -50,11 +50,13 @@ export class DiceParser extends Parser {
             this.CONSUME(tokens.RParen);
         });
         this.RULE("operator", () => {
-            this.OR([
-                { ALT: () => { this.CONSUME(tokens.Plus); } },
-                { ALT: () => { this.CONSUME(tokens.Minus); } },
-                { ALT: () => { this.CONSUME(tokens.Multiply); } }
-            ]);
+            this.OPTION(() => {
+                this.OR([
+                    { ALT: () => { this.CONSUME(tokens.Plus); } },
+                    { ALT: () => { this.CONSUME(tokens.Minus); } },
+                    { ALT: () => { this.CONSUME(tokens.Multiply); } }
+                ]);
+            });
         });
 
         this.performSelfAnalysis();
