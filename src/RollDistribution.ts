@@ -20,6 +20,17 @@ export class RollDistribution {
         return new RollDistribution(odds, denominator);
     }
 
+    multiply (times: number) {
+        const initialRoll = this.copy();
+        let result = initialRoll;
+
+        for (let i = 1; i < times; i++) {
+            result = result.add(initialRoll);
+        }
+
+        return result;
+    }
+
     private copy () {
         return new RollDistribution(new Map(this.odds), this.denominator);
     }
