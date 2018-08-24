@@ -20,6 +20,10 @@ export class RollDistribution {
         return new RollDistribution(odds, denominator);
     }
 
+    private copy () {
+        return new RollDistribution(new Map(this.odds), this.denominator);
+    }
+
     static singleDice(diceSize: number) {
         const outcomes = range(1, diceSize + 1);
         const odds = times(diceSize, constant(1));
