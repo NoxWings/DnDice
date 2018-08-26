@@ -4,15 +4,15 @@ import { Parser } from "chevrotain";
 // ---Grammar---
 
 // expression
-//     : singleExpression { binaryOperator, singleExpression }
+//     : additionExpression
+// additionExpression
+//     : multiplicationExpression { AdditionOperator, multiplicationExpression }
+// multiplicationExpression
+//     : atomicExpression { MultiplicationOperator, atomicExpression }
+// atomicExpression
+//     : Integer | Dice | subExpression
 // subExpression
 //     : LParen expression RParen
-// singleExpression
-//     : Integer | diceExpression | subExpression
-// diceExpression
-//     : Dice (Advantage | Disadvantage)
-// binaryOperator
-//     : Plus | Minus | Multiply
 
 export class DiceParser extends Parser {
     private static _instance: DiceParser;
@@ -24,51 +24,45 @@ export class DiceParser extends Parser {
         return DiceParser._instance;
     }
 
-    private expression: any;
-    private subExpression: any;
-    private singleExpression: any;
-    private diceExpression: any;
-    private binaryOperator: any;
+    private expression;
+    private additionExpression;
+    private multiplicationExpression;
+    private atomicExpression;
+    private subExpression;
 
     private constructor () {
         super([], tokens);
 
         this.RULE("expression", () => {
-            this.SUBRULE(this.singleExpression);
+            this.SUBRULE(this.additionExpression);
+        });
+        this.RULE("additionExpression", () => {
+            this.SUBRULE(this.multiplicationExpression, { LABEL: "lhs" });
             this.MANY(() => {
-                this.SUBRULE(this.binaryOperator);
-                this.SUBRULE2(this.singleExpression);
+                this.CONSUME(tokens.AdditionOperator);
+                this.SUBRULE2(this.multiplicationExpression, { LABEL: "rhs" });
             });
+        });
+        this.RULE("multiplicationExpression", () => {
+            this.SUBRULE(this.atomicExpression, { LABEL: "lhs" });
+            this.MANY(() => {
+                this.OPTION(() => {
+                    this.CONSUME(tokens.MultiplicationOperator);
+                });
+                this.SUBRULE2(this.atomicExpression, { LABEL: "rhs" });
+            });
+        });
+        this.RULE("atomicExpression", () => {
+            this.OR([
+                { ALT: () => { this.CONSUME(tokens.Integer); } },
+                { ALT: () => { this.CONSUME(tokens.Dice); } },
+                { ALT: () => { this.SUBRULE(this.subExpression); } }
+            ]);
         });
         this.RULE("subExpression", () => {
             this.CONSUME(tokens.LParen);
             this.SUBRULE(this.expression);
             this.CONSUME(tokens.RParen);
-        });
-        this.RULE("singleExpression", () => {
-            this.OR([
-                { ALT: () => { this.CONSUME(tokens.Integer); } },
-                { ALT: () => { this.SUBRULE(this.diceExpression); } },
-                { ALT: () => { this.SUBRULE(this.subExpression); } }
-            ]);
-        });
-        this.RULE("diceExpression", () => {
-            this.CONSUME(tokens.Dice);
-            this.OPTION(() => {
-                this.OR([
-                    { ALT: () => { this.CONSUME(tokens.Advantage); } },
-                    { ALT: () => { this.CONSUME(tokens.Disadvantage); } }
-                ]);
-            });
-        });
-        this.RULE("binaryOperator", () => {
-            this.OPTION(() => {
-                this.OR([
-                    { ALT: () => { this.CONSUME(tokens.Plus); } },
-                    { ALT: () => { this.CONSUME(tokens.Minus); } },
-                    { ALT: () => { this.CONSUME(tokens.Multiply); } }
-                ]);
-            });
         });
 
         this.performSelfAnalysis();
