@@ -43,3 +43,5 @@ export class RollDistribution {
         return new RollDistribution(partialOdds, diceSize);
     }
 }
+
+export const d = RollDistribution.singleDice;
