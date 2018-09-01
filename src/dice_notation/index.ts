@@ -1,19 +1,20 @@
+import { ParsingError, LexingError } from "./errors";
 import { DiceLexer } from "./lexer";
-import { DiceParser } from './parser';
-import { DiceInterpreter } from './interpreter';
-import { LexingError, ParsingError } from "./errors";
+import { DiceParser } from "./parser";
+import { DiceInterpreter } from "./interpreter";
+
 const lexer = DiceLexer.instance;
 const parser = DiceParser.instance;
 const interpreter = DiceInterpreter.instance;
 
-function checkErrors (instance, ErrorType, errorMessage) {
+function checkErrors(instance, ErrorType, errorMessage) {
     if (instance.errors.length > 0) {
         const errors = instance.errors.map(e => e.message).join("\n");
         throw new ErrorType(`${errorMessage}:\n${errors}`);
     }
 }
 
-export default function (input: string) {
+export default function(input: string) {
     const lexingResult = lexer.tokenize(input);
     checkErrors(lexingResult, LexingError, "Lexing errors detected");
 

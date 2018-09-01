@@ -6,18 +6,18 @@ import { SemanticError } from "./errors";
 
 export class DiceInterpreter extends DiceParserBaseVisitor {
     private static _instance = new DiceInterpreter();
-    public static get instance () { return DiceInterpreter._instance; }
+    public static get instance() { return DiceInterpreter._instance; }
 
-    private constructor () {
+    private constructor() {
         super();
         this.validateVisitor();
     }
 
-    expression (ctx) {
+    public expression(ctx) {
         return this.visit(ctx.additionExpression);
     }
 
-    additionExpression (ctx) {
+    protected additionExpression(ctx) {
         let result = this.visit(ctx.lhs);
 
         if (ctx.rhs) {
@@ -36,7 +36,7 @@ export class DiceInterpreter extends DiceParserBaseVisitor {
         return result;
     }
 
-    multiplicationExpression (ctx) {
+    protected multiplicationExpression(ctx) {
         let result = this.visit(ctx.lhs);
 
         if (ctx.rhs) {
@@ -49,7 +49,7 @@ export class DiceInterpreter extends DiceParserBaseVisitor {
         return result;
     }
 
-    atomicExpression (ctx) {
+    protected atomicExpression(ctx) {
         if (ctx.Integer) {
             const integer = parseInt(ctx.Integer[0].image, 10);
             return integer;
@@ -61,11 +61,11 @@ export class DiceInterpreter extends DiceParserBaseVisitor {
         }
     }
 
-    subExpression (ctx) {
-        return this.visit(ctx.expression)
+    protected subExpression(ctx) {
+        return this.visit(ctx.expression);
     }
 
-    add (a, b) {
+    protected add(a, b) {
         const aIsRoll = a instanceof Roll;
         const bIsRoll = b instanceof Roll;
 
@@ -76,7 +76,7 @@ export class DiceInterpreter extends DiceParserBaseVisitor {
         }
     }
 
-    minus (a, b) {
+    protected minus(a, b) {
         const aIsRoll = a instanceof Roll;
         const bIsRoll = b instanceof Roll;
 
@@ -87,7 +87,7 @@ export class DiceInterpreter extends DiceParserBaseVisitor {
         }
     }
 
-    multiply (a, b) {
+    protected multiply(a, b) {
         const aIsRoll = a instanceof Roll;
         const bIsRoll = b instanceof Roll;
 

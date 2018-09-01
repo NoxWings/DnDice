@@ -16,7 +16,7 @@ import { Parser } from "chevrotain";
 
 export class DiceParser extends Parser {
     private static _instance = new DiceParser();
-    public static get instance () { return DiceParser._instance; }
+    public static get instance() { return DiceParser._instance; }
 
     public expression;
     private additionExpression;
@@ -24,7 +24,7 @@ export class DiceParser extends Parser {
     private atomicExpression;
     private subExpression;
 
-    private constructor () {
+    private constructor() {
         super([], tokens, { outputCst: true });
 
         this.RULE("expression", () => {

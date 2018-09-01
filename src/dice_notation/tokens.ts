@@ -12,7 +12,7 @@ export const Minus = createToken({ name: "Minus", pattern: /\-/, categories: Add
 export const MultiplicationOperator = createToken({ name: "MultiplicationOperator", pattern: Lexer.NA });
 export const Multiply = createToken({ name: "Multiply", pattern: /\*/, categories: MultiplicationOperator });
 
-export const DiceModifier = createToken({ name: "DiceModifier", pattern: Lexer.NA })
+export const DiceModifier = createToken({ name: "DiceModifier", pattern: Lexer.NA });
 export const Advantage = createToken({ name: "Advantage", pattern: /H\d*/, categories: DiceModifier });
 export const Disadvantage = createToken({ name: "Disadvantage", pattern: /L\d*/, categories: DiceModifier });
 
