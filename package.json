@@ -5,7 +5,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "pretest": "tslint src/**/*.ts",
+    "pretest": "tslint src/**/*.{ts,tsx}",
     "test": "mocha",
     "build": "webpack --config webpack/prod.config.js",
     "watch": "webpack --watch --config webpack/dev.config.js",
@@ -15,6 +15,7 @@
   "author": "David García Miguel <noxwings@gmail.com>",
   "devDependencies": {
     "@types/lodash": "^4.14.116",
+    "@types/node": "^10.9.4",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "css-loader": "^1.0.0",
@@ -37,6 +38,7 @@
     "chart.js": "^2.7.2",
     "chevrotain": "^3.7.4",
     "lodash": "^4.17.10",
+    "preact": "^8.3.1",
     "tslib": "^1.9.3"
   }
 }

@@ -2,13 +2,17 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es2017",
+        "moduleResolution": "node",
         "allowJs": true,
         "removeComments": true,
         "importHelpers": true,
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "jsx": "react",
+        "jsxFactory": "h"
     },
     "exclude": [
         "node_modules",
-        "**/*.spec.ts"
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
     ]
 }
