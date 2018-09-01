@@ -1,5 +1,5 @@
 import { zip, range, times, constant } from "lodash";
-import d from "./dice_notation";
+import d from "../dice_notation";
 
 type operatorFunction = (result1: number, result2: number) => number;
 

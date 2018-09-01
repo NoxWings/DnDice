@@ -1,6 +1,6 @@
 import { DiceParserBaseVisitor } from "./parser";
 import { tokenMatcher } from "chevrotain";
-import { Roll } from "../Roll";
+import { Roll } from "../models/Roll";
 import { Plus } from "./tokens";
 import { SemanticError } from "./errors";
 

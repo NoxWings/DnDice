@@ -1,4 +1,4 @@
-import { Roll } from "./Roll";
+import { Roll } from "./models/Roll";
 
 const magicMissile = new Roll("3d4+3");
 const magicMissile2 = new Roll("3(1d4+1)");
