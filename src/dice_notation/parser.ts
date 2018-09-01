@@ -1,4 +1,4 @@
-import { lexer, tokens } from "./lexer";
+import { tokens } from "./tokens";
 import { Parser } from "chevrotain";
 
 // ---Grammar---
@@ -15,23 +15,17 @@ import { Parser } from "chevrotain";
 //     : LParen expression RParen
 
 export class DiceParser extends Parser {
-    private static _instance: DiceParser;
+    private static _instance = new DiceParser();
+    public static get instance () { return DiceParser._instance; }
 
-    public static get instance () {
-        if (!DiceParser._instance) {
-            DiceParser._instance = new DiceParser();
-        }
-        return DiceParser._instance;
-    }
-
-    private expression;
+    public expression;
     private additionExpression;
     private multiplicationExpression;
     private atomicExpression;
     private subExpression;
 
     private constructor () {
-        super([], tokens);
+        super([], tokens, { outputCst: true });
 
         this.RULE("expression", () => {
             this.SUBRULE(this.additionExpression);
@@ -67,25 +61,6 @@ export class DiceParser extends Parser {
 
         this.performSelfAnalysis();
     }
-
-    public parse (input: string) {
-        const lexingResult = lexer.tokenize(input);
-
-        if (lexingResult.errors.length > 0) {
-            throw new Error("Lexing errors detected");
-        }
-
-        this.input = lexingResult.tokens;
-
-        this["expression"]();
-
-        if (this.errors.length > 0) {
-            const errorMessages = [
-                "Parsing errors detected",
-                ...this.errors.map(error => error.message)
-            ].join("\n");
-
-            throw new Error(errorMessages);
-        }
-    }
 }
+
+export const DiceParserBaseVisitor = DiceParser.instance.getBaseCstVisitorConstructor();
