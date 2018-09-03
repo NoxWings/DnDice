@@ -26,10 +26,7 @@ export class RollChart extends Component<RollChartProps, RollChartState> {
     }
 
     public render() {
-        return <div>
-            <h1>Roll chart</h1>
-            <Line data={this.state} options={chartOptions} />
-        </div>;
+        return <Line data={this.state} options={chartOptions} />;
     }
 
     private updateChartData() {
