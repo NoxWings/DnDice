@@ -1,5 +1,5 @@
 import { h, render } from "preact";
-import { Page } from "./components/page";
+import { RollPage } from "./components/roll_page";
 import "../resources/css/index.css";
 
-window.onload = () => render(<Page />, document.body);
+window.onload = () => render(<RollPage />, document.body);

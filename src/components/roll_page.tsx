@@ -8,7 +8,7 @@ interface PageState {
     rolls: Roll[];
 }
 
-export class Page extends Component<{}, PageState> {
+export class RollPage extends Component<{}, PageState> {
     constructor(props) {
         super(props);
 
