@@ -20,6 +20,7 @@ export class Roll {
     }
 
     private _string: string = "";
+    private _distribution: { [s: string]: number; };
     private odds: Map<number, number> = new Map();
     private denominator: number = 1;
 
@@ -39,6 +40,16 @@ export class Roll {
 
     get string() {
         return this._string;
+    }
+
+    get distribution() {
+        if (!this._distribution) {
+            this._distribution = {};
+            this.odds.forEach((value, key) => {
+                this._distribution[key] = value / this.denominator;
+            });
+        }
+        return this._distribution;
     }
 
     public add(otherRoll: Roll) {
