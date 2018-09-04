@@ -10,15 +10,13 @@ export interface RollListProps {
 
 export class RollList extends Component<RollListProps, {}> {
     public render({ rolls, onRollAdd, onRollRemove }: RollListProps) {
-        return <ul>
-            {rolls.map((roll, i) =>
-                <li>
-                    {roll.string} <button onClick={onRollRemove.bind(i)}>X</button>
-                </li>
-            )}
-            <li>
-                <RollInput onNewRoll={onRollAdd} />
-            </li>
-        </ul>;
+        return <div>
+            <RollInput onNewRoll={onRollAdd} />
+            <ul class="rollList">
+                {rolls.map((roll, i) =>
+                    <li>{roll.string}<span class="close" onClick={onRollRemove.bind(i)} /></li>
+                )}
+            </ul>
+        </div>;
     }
 }
