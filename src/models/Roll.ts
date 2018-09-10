@@ -1,4 +1,4 @@
-import { zip, range, times, constant } from "lodash";
+import { zip, range, times, constant, keys } from "lodash";
 import d from "../dice_notation";
 
 type operatorFunction = (result1: number, result2: number) => number;
@@ -20,7 +20,6 @@ export class Roll {
     }
 
     private _string: string = "";
-    private _distribution: { [s: string]: number; };
     private odds: Map<number, number> = new Map();
     private denominator: number = 1;
 
@@ -42,14 +41,40 @@ export class Roll {
         return this._string;
     }
 
+    get outcomes() {
+        return Array.from(this.odds.keys()).sort((a, b) => a - b);
+    }
+
     get distribution() {
-        if (!this._distribution) {
-            this._distribution = {};
-            this.odds.forEach((value, key) => {
-                this._distribution[key] = value / this.denominator;
-            });
-        }
-        return this._distribution;
+        const distribution = {};
+        this.outcomes.forEach(outcome => {
+            distribution[outcome] = this.odds.get(outcome) / this.denominator;
+        });
+        return distribution;
+    }
+
+    get distributionAtMost() {
+        const distribution = {};
+        let accumulatedOdds = 0;
+
+        this.outcomes.forEach(outcome => {
+            accumulatedOdds += this.odds.get(outcome);
+            distribution[outcome] = accumulatedOdds / this.denominator;
+        });
+
+        return distribution;
+    }
+
+    get distributionAtLeast() {
+        const distribution = {};
+        let accumulatedOdds = 0;
+
+        this.outcomes.reverse().forEach(outcome => {
+            accumulatedOdds += this.odds.get(outcome);
+            distribution[outcome] = accumulatedOdds / this.denominator;
+        });
+
+        return distribution;
     }
 
     public add(otherRoll: Roll) {
