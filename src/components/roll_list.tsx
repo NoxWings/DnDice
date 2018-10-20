@@ -14,7 +14,7 @@ export class RollList extends Component<RollListProps, {}> {
             <RollInput onNewRoll={onRollAdd} />
             <ul class="rollList">
                 {rolls.map((roll, i) =>
-                    <li>{roll.string}<span class="close" onClick={onRollRemove.bind(i)} /></li>
+                    <li>{roll.string}<span class="close" onClick={() => onRollRemove(i)} /></li>
                 )}
             </ul>
         </div>;
